@@ -1,0 +1,164 @@
+html, body {
+  margin: 0px;
+  padding: 0px;
+  font-family: tahoma;
+  color: black;
+}
+.canvas {
+  
+}
+.gridH {
+  height: 33.3%;
+  border-style: solid;
+  border-width: 2px;
+  border-color: black;
+  width: 100%
+}
+
+#s_landingP{
+  display: block;
+  height: 100vh;
+  border-style: solid;
+  border-width: 5px;
+  border-color: black;
+  align-content: center;
+}
+#s_gamingP{
+  display: none;
+  height: 100vh;
+  border-style: solid;
+  border-width: 2px;
+  border-color: black;
+}
+hHeight{
+  height: 30vh;
+}
+.maxHeight{
+  height: 100vh;
+}
+.gameHeight{
+  height: 80vh
+}
+.landing-page{
+  text-align: center;
+  align-slef: center;
+  color: #696969;
+}
+.w3-col m8 w3-violet{
+  align-items: center;
+  font-color: violet;
+}
+.center-text{
+  text-align: center;
+  color: violet;
+  height: 50%;
+  display: grid;
+  grid-template-rows: 1fr 4fr 1fr;
+  grid-template-columns: 1fr 4fr 1fr; 
+}
+.center-button{
+  background-color:#4CA;
+  color: purple;
+  text-align: center;
+  grid-row-start: 2;
+  grid-row-end: -2;
+  grid-column-start: 2;
+  grid-column-end: -2;
+  height: 100%;
+  width: 100%;
+}
+.startGameBtn {
+  background-color: #4CA;
+}
+.startButton {
+  background-color: #4CA;
+  button-color: violet;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 35px;
+  transition-duration: 0.4s;
+  grid-row-start: 2;
+  grid-row-end: -2;
+  grid-column-start: 2;
+  geid-column-end: -2;
+}
+.startButton:hover {
+  background-color: #4CA;
+  color: white;
+}
+
+.game-container {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 2fr 1fr;
+}
+
+#rightS {
+  grid-column: 3;
+  height: 600px;
+  background-color: #B22222;
+  float: right;
+}
+#center {
+  height: 600px;
+  width: -webkit-fill-available;
+  margin: auto;
+  display: flex;
+  grid-column: 2;
+}
+#leftS {
+  height: 600px;
+  background-color: #B22222;
+  grid-column: 1;
+  float: left;
+}
+
+.w3-light-blue{
+  color: black;
+  background-color: #87CEEB;
+  width: inherit;
+}
+
+.w3-row-padding{
+  padding: 0px;
+}
+
+.background {
+  background-color: darkcyan;
+}
+
+.text {
+  color: violet;
+}
+
+#btnWrds {
+  grid-column: 2;
+}
+
+.word-container {
+  display: grid;
+  grid-row-template: 1fr;
+  grid-column-template: 25% 50% 25%;
+  margin: 10px;
+}
+
+#player-1 {
+  grid-columnn: 1;
+  text-align: left;
+  font-size: 2em;
+  color: white;
+}
+ #game-page {
+   grid-column: 2;
+   text-align: center;
+   font-size: 2em;
+   color: white;
+ }
+#player-2 {
+  grid-column: 3;
+  text-align: right;
+  font-size: 2em;
+  color: white;
+}

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>13COMP Aiden firebasel</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="13COMP firebase">
+  <meta name="keywords" content="13COMP, firebase">
+  <meta name="author" content="Aiden">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-compatible" content="ie=edge" />
+  <!-- stylesheets *****************************************-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="style.css">
+  <!-- P5.js ***********************************************-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/addons/p5.dom.min.js"></script>
+  <!-- firebase start **************************************-->
+  <!-- Firebase App (core Firebase SDK) is always required & must be listed 1st -->
+  <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-app.js"></script>
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-analytics.js"></script>
+  <!-- firebase end ****************************************-->
+
+  <!-- Your modules ****************************************-->
+</head>
+<!--*************************************************************
+//  BODY
+**************************************************************-->
+<script defer src="fb_io.js">
+</script>
+<script defer src="starting.js">
+</script>
+<script defer src="landing.js">
+</script>
+<!-- "starting.js" -->
+<!-- "landing.js" -->
+<!-- "fb_io.js" -->
+<!-- "landing page" -->
+
+
+<!-- The landing page *****************************************
+// gives the landing page its background colour                -->
+
+<body class="background">
+
+
+  <section id="s_landingP">
+    <div class="landing-page">
+      <h1 class="text">Play Tic-Tac-Toe</h1>
+      <div class="center-text">
+        <p id="btnWrds">Play Game Click Button to Start</p>
+        <div class="center-button">
+          <button class="center-button" onclick="startGameBtn()">Start</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- game page -->
+  <section id="s_gameingP">
+    <div class="word-container">
+      <div id="player-1">Player 1 (X)</div>
+      <div id="game-page">Game page</div>
+      <div id="player-2">Player 2 (O)</div>
+    </div>
+    <div class="game-container">
+      <div id="leftS">
+        <p id="p1_Wins">Wins: 0</p>
+        <p id="p1_Losses">Losses: 0</p>
+        <p id="p1_Draws">Draws: 0</p>
+        <button onclick="reset()">Reset</button>
+      </div>
+      <div id="center">
+        <!-----------Row 1 start +++++++++++++++++-->
+        <div class="w3-row-padding w3-light-blue">
+          <button class="w3-button w3-xxxlarge gridH" id="button0" onclick="gridClicked(0)"></button>
+          <button class="w3-button w3-xxxlarge gridH" onclick="gridClicked(1)" id="button1"></button>
+          <button class="w3-button w3-xxxlarge gridH" onclick="gridClicked(2)" id="button2"></button>
+        </div>
+        <!------Row 1 End +++++++++++++++++-->
+
+        <!-------------Row 2 start +++++++++++++++++-->
+        <div class="w3-row-padding  w3-light-blue">
+          <button class="w3-button w3-xxxlarge gridH" onclick="gridClicked(3)" id="button3"></button>
+          <button class="w3-button w3-xxxlarge gridH" onclick="gridClicked(4)" id="button4"></button>
+          <button class="w3-button w3-xxxlarge gridH" onclick="gridClicked(5)" id="button5"></button>
+        </div>
+        <!--Row 2 end +++++++++++++++++++++-->
+
+        <!---------Row 3 start ++++++++++++++++++++-->
+        <div class="w3-row-padding  w3-light-blue">
+          <button class="w3-button w3-xxxlarge gridH" onclick="gridClicked(6)" id="button6"></button>
+          <button class="w3-button w3-xxxlarge gridH" onclick="gridClicked(7)" id="button7"></button>
+          <button class="w3-button w3-xxxlarge gridH" onclick="gridClicked(8)" id="button8"></button>
+        </div> <!-- Row 3 end ++++++++++++++++++++-->
+      </div>
+      
+      <div id="rightS">
+        <p id="p2_Wins">Wins: 0</p>
+        <p id="p2_Losses">Losses: 0</p>
+        <p id="p2_Draws">Draws: 0</p>
+      </div>
+    </div>
+    
+
+
+
+
+
+    <header>
+      <h1 class="w3-center"></h1>
+    </header>
+    </div>
+  </section>
+</body>
+
+</html>
