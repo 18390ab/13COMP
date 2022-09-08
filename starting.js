@@ -1,6 +1,5 @@
-
 /****************************************************************/
-/ variables /
+// variables //
 /****************************************************************/
 var checkWin
 var playerNum = 0;
@@ -15,6 +14,11 @@ var wins = 0;
 var losses = 0;
 var draws = 0;
 var playerTurn;
+var userDetails = {
+  uid: "",
+  userName: ""
+};
+var gameId;
 
 
 function playBoard() {
@@ -27,34 +31,11 @@ function gridClicked(_elemtNumber) {
   if (array[_elemtNumber] == 0) {
     array[_elemtNumber] = playerArr[playerNum].value;
   }
-  fb_writeRec("games", "gameId", array);
+  fb_writeRec("games", gameId, array);
 }
 
-// function winFunction(_elemtNumber) {
-//   array[_elemtNumber] = playerArr[playerNum].value;
-//   winner = false
-//   for (var i = 0; i < 9; i++){
-//     result = array[i];
-//     if (result == true) {
-//       wins = wins + 1
-//       winner = true 
-//       document.getElementById("p1_Wins").innerHTML = "Wins: " + wins
-//     }
-//     if (winner == false) {
-//       losses = losses + 1
-//       document.getElementById("p2_Losses").innerHTML = "Losses: " + losses;
-//     }
-
-//     console.log ('wins = ' + wins + ' losses = ' + losses)
-
-//     var btnObj = document.getElementById("button" + i)
-//     btnObj.disabled = true;
-//     btnObj.style.backgroundColor = "red";
-//   }
-// }
-
 // START OF FUNCTIONS //
-/ check win array goes and checks if a player has won by seeing if three buttons on the game board in a row have the same player id /
+// check win array goes and checks if a player has won by seeing if three buttons on the game board in a row have the same player id //
 function checkWinArr() {
   if (array[0] == array[1] && array[1] == array[2] && array[0] != 0) {
     console.log(array[0])
@@ -89,10 +70,10 @@ function checkWinArr() {
     displayWinner(array[2])
   }
 }
-/ this function resets the board by making all the buttons null and setting all the player numbers on the baord back to 0 /
+// this function resets the board by making all the buttons null and setting all the player numbers on the baord back to 0 //
 function reset() {
   array = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-  fb_writeRec("games", "gameId", array);
+  fb_writeRec("games", gameId, array);
   for (var i = 0; i < 9; i++) {
     var btnObj = document.getElementById("button" + i)
     btnObj.disabled = false;
@@ -100,7 +81,7 @@ function reset() {
     btnObj.innerHTML = "";
   }
 }
-/ this function displays the board to the other person playing the game through the firebase /
+// this function displays the board to the other person playing the game through the firebase //
 
 function displayGrid() {
 
@@ -128,7 +109,7 @@ function displayGrid() {
     }
   }
 }
-/ this function resets the board through the firebase so that the other persons clicks is not still there when you reset the game/
+// this function resets the board through the firebase so that the other persons clicks is not still there when you reset the game//
 function gridReturn(_snapshot) {
   var data = _snapshot.val()
 
@@ -137,9 +118,9 @@ function gridReturn(_snapshot) {
   checkWinArr()
   tie()
 }
-runOnUpdate("games", "gameId", gridReturn);
 
-/ this function disables all the buttons on the grid so that you can not continue playing when someone has won /
+
+// this function disables all the buttons on the grid so that you can not continue playing when someone has won //
 
 function freezeGame() {
   for (var i = 0; i < 9; i++) {
@@ -149,15 +130,17 @@ function freezeGame() {
   }
 }
 
-/ this function displays which player has won /
+// this function displays which player has won //
 
 function displayWinner(winnervalue) {
   //making the winner value into the winner
   //so it can be used in player array
+  
   var winner;
   var loser;
   //winnervalue being -1 means that player 0 won
   //if player 0 doesn't win, player 1 wins
+  
   if (winnervalue == -1) {
     winner = 0;
     loser = 1;
@@ -189,6 +172,8 @@ function displayWinner(winnervalue) {
 
   freezeGame();
 }
+// this function will check to see if all the squares on the board have been filled and if they have then it will add one to both the draws//
+
 function tie() {
   var emptySqr = false;
   for (var i = 0; i < 9; i++) {
@@ -213,13 +198,80 @@ function tie() {
   } 
 }
 
+//this function will try find a lobby to join and checks to see who is waiting and if a game has been found then you will join it and you will be able to play the game//
 
 async function checkForWaiting(){
   var waiting = await readRec("waitingList", "");
-  return waiting;
+
+  var key;
+  for (var x in waiting){
+    key = x;
+    break;
+  }
+  
+  gameId = key + userDetails.uid;
+
+  fb_writeRec("waitingList", key + "/other", userDetails.uid);
+  setTimeout(function(){
+    fb_removeRec("waitingList", key)
+  }, 5000)
+  playerNum = 0;
+  startGame();
 }
 
+//this function will automatically log you in when you first go on the page, but if it is the first time you have gone on the page it will ask you to log in to your google account once you have done that then you can continue//
 
+function autoLogIn() {
+  firebase.auth().onAuthStateChanged(authChanged);
 
+  async function authChanged(_user) {
+    if (_user) {
+      userDetails.uid = _user.uid;
+      var fbUser = await readRec("userDetails",userDetails.uid);
+
+      if (fbUser) {
+        console.log("userRegistration");
+        userDetails = fbUser;
+      }else {
+        console.log("user not registered")
+        var username = prompt("set your username")
+        userDetails.userName = username;
+        fb_writeRec("userDetails", userDetails.uid, userDetails);
+      }
+      
+    } else {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithRedirect(provider);
+    }
+  }
+}
+autoLogIn();
+
+//this function crates a lobby for people to join, and lets you know if the other player has joined//
+
+function createLobby() {
+  var lobbyVars = {
+    uid: userDetails.uid,
+    username: userDetails.userName
+  }
+  fb_writeRec ("waitingList", userDetails.uid, lobbyVars);
+  runOnUpdate("waitingList", userDetails.uid + "/other", otherJoined);
+  function otherJoined(_snap) {
+    var data = _snap.val();
+    if (data == null) {
+      return
+    }
+    gameId = userDetails.uid + data;
+    playerNum = 1;
+    startGame();
+    fb_removeRec("waitingList", userDetails.uid)
+    console.log("other joined")
+  }
+}
+//this function starts the game for both of the players once one has joined//
+function startGame() {
+  fb_writeRec ("games", gameId, [0,0,0,0,0,0,0,0,0])
+  runOnUpdate("games", gameId, gridReturn);
+}
 
 // END OF CODE //

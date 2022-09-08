@@ -149,6 +149,20 @@ async function readRec(_path, _key){
 
   return(data);
 }
+
+
+function fb_removeRec(_path, _key) {
+
+  firebase.database().ref(_path + '/' + _key).remove(
+
+    function error(error) {
+      if (error) {
+        console.log(error);
+      }
+    }
+
+  );
+}
 /**************************************************************/
 //    END OF MODULE
 /**************************************************************/
